@@ -1,0 +1,64 @@
+<div class="py-10 px-4 sm:px-10 bg-gray-100 min-h-screen">
+    <!-- Orders Heading Centered -->
+    <h3 class="text-2xl font-bold text-gray-800 text-center mb-6">My Orders</h3>
+
+    <div class="space-y-10">
+        <!-- Loop for Orders -->
+        @for (order of orders; track $index) {
+        <div class="order-card">
+            <!-- Order Details -->
+            <div class="mb-4">
+                <h6 class="text-lg font-semibold text-gray-700 order-id">
+                    Order Id: <span>{{ order._id }}</span>
+                </h6>
+                <p class="text-sm text-gray-500">
+                    Order Date: {{ order.date | date: 'mediumDate' }}
+                </p>
+                <p class="text-md font-semibold mt-2">
+                    Order Status: <span class="text-blue-600">{{ order.status }}</span>
+                </p>
+            </div>
+
+            <!-- Order Items -->
+            <div class="divide-y divide-gray-200">
+                @for (item of order.items; track $index) {
+                <div class="flex flex-col sm:flex-row items-center py-4 gap-4">
+                    <!-- Product Image -->
+                    <img [src]="item.product.images[0]" alt="Product Image"
+                        class="product-image w-20 h-20 rounded-md object-cover border flex-shrink-0 mb-4 sm:mb-0" />
+
+                    <!-- Product Details -->
+                    <div class="flex-grow w-full sm:w-auto">
+                        <h5 class="text-gray-800 font-medium text-md truncate">
+                            {{ item.product.name }}
+                        </h5>
+                        <div class="flex items-center space-x-2 text-sm">
+                            <p class="line-through text-gray-500">
+                                ₹{{ item.product.price }}
+                            </p>
+                            <p class="text-orange-500 font-medium">
+                                {{ item.product.discount }}% OFF
+                            </p>
+                        </div>
+                        <p class="text-md font-semibold text-green-600">
+                            ₹{{ sellingPrice(item.product) }}
+                        </p>
+                        <p class="text-sm text-gray-700">
+                            Amount: ₹{{ sellingPrice(item.product) * item.quantity }}
+                        </p>
+                    </div>
+
+                    <!-- Quantity -->
+                    <div class="order-quantity">
+                        <span class="text-gray-600 text-sm mb-1">Quantity</span>
+                        <span class="px-4 text-md font-semibold">
+                            {{ item.quantity }}
+                        </span>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+        }
+    </div>
+</div>

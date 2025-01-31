@@ -1,0 +1,159 @@
+<!-- Main Content -->
+<div class="container mx-auto mt-4">
+  <!-- Check if cart is empty -->
+  @if (cartItems.length === 0) {
+  <div class="flex flex-col items-center justify-center text-center min-h-screen">
+    <!-- Cart Icon -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-20 w-20 text-gray-400 mb-4"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.8 9h12.6L17 13m-10 0H5.4M5 4h14a2 2 0 012 2l-1.6 8a2 2 0 01-2 2H7a2 2 0 01-2-2L3.6 6M16 18a2 2 0 100 4 2 2 0 000-4zm-8 0a2 2 0 100 4 2 2 0 000-4z"
+      />
+    </svg>
+    <!-- Empty Cart Message -->
+    <h5 class="text-gray-600 text-lg font-medium mb-2 mt-4">Your cart is empty</h5>
+    <p class="text-gray-500 text-sm">Add some items to your cart to get started!</p>
+  </div>
+  } @else {
+  <div class="grid lg:grid-cols-3 gap-8">
+    <!-- Cart Items -->
+     @if (orderStep == 0) {
+    <div class="lg:col-span-2 bg-white shadow-lg rounded-md p-4">
+      <p class="text-center text-xl mb-6">Your Items</p>
+
+      <!-- Loop through cart items -->
+      @for (item of cartItems; track $index) {
+      <div class="flex items-start border-b pb-6 mb-4 p-4">
+        <!-- Product Image -->
+        <img
+          [src]="item.product.images[0]"
+          alt="Product Image"
+          class="w-24 h-24 rounded-md object-cover border"
+        />
+        <div class="ml-6 flex-grow">
+          <!-- Product Details -->
+          <h5 class="text-gray-800 font-medium text-md">{{ item.product.name }}</h5>
+          <p class="text-sm text-gray-500 line-through">₹ {{ item.product.price }}</p>
+          <p class="text-sm text-orange-500 font-medium">{{ item.product.discount }}% OFF</p>
+          <p class="text-md font-semibold text-green-600">
+            ₹ {{ sellingPrice(item.product) }}
+          </p>
+          <p class="text-sm text-gray-700">
+            Amount: ₹ {{ sellingPrice(item.product) * item.quantity }}
+          </p>
+        </div>
+        <!-- Quantity Controls -->
+        <div class="flex flex-col items-center">
+          <span class="text-gray-600 mb-1">Quantity</span>
+          <div class="flex items-center">
+            <button
+              (click)="addToCart(item.product._id!,-1)"
+              class="px-3 py-1 bg-gray-300 rounded-md shadow hover:bg-gray-400 transition"
+            >
+              -
+            </button>
+            <span class="px-4 text-md font-semibold">{{ item.quantity }}</span>
+            <button
+              (click)="addToCart(item.product._id!, 1)"
+              class="px-3 py-1 bg-gray-300 rounded-md shadow hover:bg-gray-400 transition"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- Summary Section -->
+    <div class="bg-white shadow-lg rounded-md p-6">
+      <h4 class="text-lg font-semibold mb-4">Summary</h4>
+
+      <!-- Price Breakdown -->
+      <div class="flex justify-between border-t pt-4">
+        <p class="text-sm font-medium text-gray-800">Total Items</p>
+        <p class="text-sm font-semibold text-gray-700">{{ cartItems.length }}</p>
+      </div>
+      <div class="flex justify-between border-t pt-2">
+        <p class="text-sm font-medium text-gray-800">Total Amount</p>
+        <p class="font-semibold text-green-600 text-md">₹ {{ totalAmount }}</p>
+      </div>
+
+      <!-- Checkout Button -->
+      <button
+      (click)="checkout()"
+        class="w-full bg-blue-600 text-white font-semibold text-sm rounded-md py-2 mt-6 hover:bg-blue-700 transition"
+      >
+        Proceed to Checkout
+      </button>
+    </div>
+  }@else if (orderStep == 1) {
+
+ <!-- Order Title Centered -->
+<div class="flex flex-col items-center">
+  <h1 class="text-2xl font-bold text-center mb-4">Your Order</h1>
+</div>
+
+<!-- Order Form -->
+<form [formGroup]="addressForm" class="max-w-lg mx-auto bg-white p-6 shadow-lg rounded-md">
+  <!-- Name -->
+  <div class="mb-4">
+    <mat-form-field class="w-full">
+      <mat-label for="name">Name</mat-label>
+      <input type="text" formControlName="address1" placeholder="Address" matInput>
+    </mat-form-field>
+  </div>
+
+  <!-- Address -->
+  <div class="mb-4">
+    <mat-form-field class="w-full">
+      <mat-label for="address">Address</mat-label>
+      <input type="text" formControlName="address2" placeholder="Address" matInput>
+    </mat-form-field>
+  </div>
+
+  <!-- City & Pincode (Side by Side in Desktop, Stacked in Mobile) -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <mat-form-field class="w-full">
+      <mat-label for="city">City</mat-label>
+      <input type="text" formControlName="city" placeholder="City" matInput>
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label for="pincode">Pin Code</mat-label>
+      <input type="text" formControlName="pincode" placeholder="Pin Code" matInput>
+    </mat-form-field>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="mt-6 text-center">
+    <button mat-raised-button class="w-full sm:w-auto bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition" (click)="addAddress()">
+      Continue
+    </button>
+  </div>
+</form>
+
+    
+  } @else if (orderStep == 2) {
+    <h1 class="text-2xl font-bold text-center">Select Payment </h1>
+    <div class="px-30 shadow">
+      <mat-radio-group [(ngModel)]="paymentType">
+        <mat-radio-button value="cash">Cash</mat-radio-button>
+        <mat-radio-button value="card" [disabled]="true">Card 2</mat-radio-button>
+      </mat-radio-group>
+      
+      <button class="mt-20" mat-raised-button (click)="completeOrder()">Continue</button>
+
+    </div>
+  }
+  </div>
+}
+</div>

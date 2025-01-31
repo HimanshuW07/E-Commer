@@ -1,0 +1,57 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full sm:w-96">
+    <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Login</h2>
+
+    <form [formGroup]="loginForm">
+      <!-- Email -->
+      <div class="mb-4">
+        <mat-form-field class="w-full">
+          <mat-label for="email">Email</mat-label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            matInput
+            required
+          />
+        </mat-form-field>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-6">
+        <mat-form-field class="w-full">
+          <mat-label for="password">Password</mat-label>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            matInput
+            required
+          />
+        </mat-form-field>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-center mb-4">
+        <button
+          mat-raised-button
+          (click)="login()"
+          [disabled]="loginForm.invalid"
+          class="bg-blue-500 text-white rounded-lg py-2 px-6 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-400"
+        >
+          Login
+        </button>
+      </div>
+    </form>
+
+    <div class="text-center mt-4">
+      <span class="text-gray-600">Don't have an account yet?</span>
+      <a
+        routerLink="/register"
+        class="text-blue-500 underline hover:text-blue-700 ml-3"
+      >
+        Register
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<header class="header bg-blue-500 shadow-md">
+  <div class="header-top flex items-center justify-between p-4">
+    <!-- Logo -->
+    <div class="logo cursor-pointer text-2xl font text-white" routerLink="/">SwiftKart</div>
+
+    <!-- Search Bar -->
+    <div class="search-bar w-1/2 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-10">
+      <input 
+        type="text" 
+        placeholder="Search brands,products & more..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="onSearch($event)"
+        class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile flex items-center ml-auto space-x-4">
+      @if (authService.isLoggedIn) {
+        <div class="flex items-center space-x-4">
+          @if (authService.isLoggedIn && !authService.isAdmin) {
+          <button class="mr-2 flex items-center" routerLink="/cart">
+            <mat-icon>shopping_cart</mat-icon>
+          </button>
+        }
+          <button class="text-white flex items-center" mat-button [matMenuTriggerFor]="menu">{{ authService.userName }}</button>
+        </div>
+      }
+      <mat-menu #menu="matMenu">  
+        @if (authService.isAdmin) {
+          <button mat-menu-item routerLink="/admin">Admin Dashboard</button>
+          <button mat-menu-item (click)="logout()">Logout</button>
+        } @else {
+          <button mat-menu-item routerLink="/profile">Profile</button>
+          <button mat-menu-item routerLink="/wishlists"><mat-icon>favorite</mat-icon></button>
+          <button mat-menu-item routerLink="/orders" class="text-red-500">Orders</button>
+          <button mat-menu-item (click)="logout()">Logout</button>
+        }
+      </mat-menu>
+    </div>
+  </div>
+
+  <!-- Header Bottom (Category Menu) -->
+  @if (authService.isLoggedIn && !loading) {
+    <div class="header-bottom bg-gray-100 p-4">
+      <nav class="category-menu">
+        <ul class="flex flex-wrap gap-4">
+          @for (category of categoryList; track $index) {
+            <li (click)="searchCategory(category._id!)" class="cursor-pointer">
+              <a class="text-gray-700 hover:bg-gray-200 p-2 rounded-md">{{ category.name }}</a>
+            </li>
+          }
+        </ul>
+      </nav>
+    </div>
+  }
+</header>

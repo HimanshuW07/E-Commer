@@ -1,0 +1,25 @@
+<div class="product-container">
+  <div class="product-card">
+    <!-- Product Image -->
+    <img class="cursor-pointer" [src]="product.images[0]" alt="Product Image" [routerLink]="'/product/'+product._id"/>
+    <!-- Product Title -->
+    <div>
+      <h6>{{ product.name }}</h6>
+      <p>{{ product.shortDescription }}</p>
+    </div>
+    <!-- Product Price -->
+    <p class="price"><s>{{ product.price }} ₹</s></p>
+    <p class="discount">{{ product.discount }}% OFF</p>
+    <p class="selling-price">{{ sellingPrice }} ₹</p>
+    
+    <!-- Add to Cart Button -->
+    <div class="icon-container">
+      <button mat-fab color="warn" (click)="addToWishlist(product)">
+        <mat-icon class="text-red-500">{{ isInWishlist(product) ? 'favorite' : 'favorite_border' }}</mat-icon>
+      </button>
+      <button mat-fab color="primary" (click)="addToCart(product)">
+        <mat-icon>{{ isProductInCart(product._id!) ? 'remove_shopping_cart' : 'add_shopping_cart' }}</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

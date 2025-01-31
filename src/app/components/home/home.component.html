@@ -1,0 +1,45 @@
+<div class="px-4 md:px-20">
+  <!-- Error message centered using Flexbox -->
+  @if (errorMessage) {
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+      <div class="bg-red-500 text-white p-6 rounded shadow-lg max-w-lg text-center">
+        <strong>Error:</strong> {{ errorMessage }}
+      </div>
+    </div>
+  } @else {
+    <div class="shadow mt-5">
+      <owl-carousel-o [options]="customOptions">
+        @for (item of bannerImages; track $index) {
+          <ng-template carouselSlide>
+            <div class="carouselSlide relative flex flex-col items-center" [routerLink]="'/product/'+item._id">
+              <img [src]="item.images[0]" alt="images" class="w-full h-auto max-w-full cursor-pointer" />
+              <span class="text-center mt-2 text-sm sm:text-base">{{ item.name }}</span>
+            </div>
+          </ng-template>
+        }
+      </owl-carousel-o>
+    </div>
+
+    <div class="m-4">
+      <h4 class="text-2xl font-bold">Featured Products</h4>
+      <div class="flex flex-wrap justify-between">
+        @for (product of featuredProducts; track $index) {
+          <div class="w-full sm:w-6/12 md:w-3/12 mb-4">
+            <app-product-card [product]="product"></app-product-card>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="m-4">
+      <h4 class="text-2xl font-bold">New Products</h4>
+      <div class="flex flex-wrap justify-between">
+        @for (product of newProducts; track $index) {
+          <div class="w-full sm:w-6/12 md:w-3/12 mb-4">
+            <app-product-card [product]="product"></app-product-card>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
