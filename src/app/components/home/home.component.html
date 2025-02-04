@@ -1,12 +1,18 @@
 <div class="px-4 md:px-20">
-  <!-- Error message centered using Flexbox -->
-  @if (errorMessage) {
+  <!-- Show Loader until data is available -->
+  @if (!bannerImages.length && !featuredProducts.length && !newProducts.length && !errorMessage) {
+    <div class="flex items-center justify-center min-h-screen bg-gray-100">
+      <div class="loader"></div>
+    </div>
+  } 
+  @else if (errorMessage) {
     <div class="flex items-center justify-center min-h-screen bg-gray-100">
       <div class="bg-red-500 text-white p-6 rounded shadow-lg max-w-lg text-center">
         <strong>Error:</strong> {{ errorMessage }}
       </div>
     </div>
-  } @else {
+  } 
+  @else {
     <div class="shadow mt-5">
       <owl-carousel-o [options]="customOptions">
         @for (item of bannerImages; track $index) {
